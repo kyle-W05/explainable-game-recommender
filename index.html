@@ -55,7 +55,23 @@
 
         <section id="results" class="results" hidden>
             <h2>Your Recommendations</h2>
-            <p id="results-message"></div>
+
+            <div class="explanation-controls">
+                <label for="explanation-style">
+                    Explanation Style
+                </label>
+
+                <select id="explanation-style">
+                    <option value="feature">
+                        Feature-based explanation
+                    </option>
+                    <option value="tradeoff">
+                        Trade-off explanation
+                    </option>
+                </select>
+            </div>
+
+            <div id="results-message"></div>
         </section>
     </main>
 
