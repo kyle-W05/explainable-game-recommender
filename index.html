@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explainable Game Recommender</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="container">
+        <header>
+            <h1>Game Recommendation System</h1>
+            <p>
+                Discover games based on your preferences
+                and understand why they are recommended.
+            </p>
+        </header>
+
+        <section class="preferences">
+            <h2>Your Preferences</h2>
+            <p>Select your preferences to get started.</p>
+
+            <form id="preferences-form">
+                <label for="genre">Preferred Genre</label>
+                <select id="genre" name="genre" required>
+                    <option value="">Select a genre</option>
+                    <option value="fps">FPS</option>
+                    <option value="rpg">RPG</option>
+                    <option value="strategy">Strategy</option>
+                    <option value="survival">Survival</option>
+                </select>
+
+                <label for="mode">Preferred Game Mode</label>
+                <select id="mode" name="mode" required>
+                    <option value="">Select a game mode</option>
+                    <option value="singleplayer">Single-player</option>
+                    <option value="multiplayer">Multiplayer</option>
+                    <option value="coop">Co-op</option>
+                </select>
+
+                <label for="setting">Preferred Setting</label>
+                <select id="setting" name="setting" required>
+                    <option value="">Select a setting</option>
+                    <option value="scifi">Science Fiction</option>
+                    <option value="fantasy">Fantasy</option>
+                    <option value="modern">Modern</option>
+                    <option value="historical">Historical</option>
+                </select>
+
+                <button type="submit">
+                    Get Recommendations
+                </button>
+            </form>
+        </section>
+
+        <section id="results" class="results" hidden>
+            <h2>Your Recommendations</h2>
+            <p id="results-message"></p>
+        </section>
+    </main>
+
+    <script src="games.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
