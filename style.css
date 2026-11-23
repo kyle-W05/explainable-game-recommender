@@ -75,3 +75,21 @@ select:focus-visible {
 [hidden] {
     display: none !important;
 }
+
+.game-card {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 15px;
+}
+
+.game-card h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+.game-card p {
+    margin: 0;
+    color: #555;
+}
