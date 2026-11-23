@@ -7,6 +7,10 @@ const explanationStyle = document.getElementById("explanation-style");
 let currentPreferences = null;
 let currentRecommendations = [];
 
+// store feedback for the current session
+let rejectedGameIds = new Set();
+let interestedGameIds = new Set();
+
 // function to calculate score deciding how well a game matches user preferences
 function calculateScore(game, preferences) {
     let score = 0;
@@ -30,6 +34,7 @@ function calculateScore(game, preferences) {
 // rank games scores and return top 5
 function getRecommendations(preferences) {
     return games
+        .filter(game => !rejectedGameIds.has(game.id))
         .map(game => ({
             ...game,
             score: calculateScore(game, preferences)
@@ -111,6 +116,23 @@ function generateExplanation(game, preferences, style) {
     return matches.map(text => ({ text, match: true }));
 }
 
+// handle user feedback
+function handleFeedback(gameId, feedback) {
+    if (feedback === "interested") {
+        interestedGameIds.add(gameId);
+    }
+
+    if (feedback === "rejected") {
+        rejectedGameIds.add(gameId);
+        interestedGameIds.delete(gameId);
+
+        // generate replacements excluding rejected games
+        currentRecommendations = getRecommendations(currentPreferences);
+    }
+
+    displayRecommendations();
+}
+
 // display the recommendations and their explanations
 function displayRecommendations() {
     resultsMessage.textContent = "";
@@ -150,13 +172,48 @@ function displayRecommendations() {
             explanationList.appendChild(item);
         });
 
+        // feedback controls
+        const feedbackControls = document.createElement("div");
+        feedbackControls.className = "feedback-controls";
+
+        const interestedButton = document.createElement("button");
+        interestedButton.type = "button";
+        interestedButton.textContent = interestedGameIds.has(game.id)
+            ? "Interested ✓"
+            : "Interested";
+
+        interestedButton.disabled = interestedGameIds.has(game.id);
+
+        interestedButton.addEventListener("click", function() {
+            handleFeedback(game.id, "interested");
+        });
+
+        const rejectButton = document.createElement("button");
+        rejectButton.type = "button";
+        rejectButton.textContent = "Not Interested";
+        rejectButton.className = "reject-button";
+
+        rejectButton.addEventListener("click", function() {
+            handleFeedback(game.id, "rejected");
+        });
+
+        feedbackControls.appendChild(interestedButton);
+        feedbackControls.appendChild(rejectButton);
+
         gameElement.appendChild(title);
         gameElement.appendChild(score);
         gameElement.appendChild(explanationHeading);
         gameElement.appendChild(explanationList);
+        gameElement.appendChild(feedbackControls);
 
         resultsMessage.appendChild(gameElement);
     });
+
+     if (currentRecommendations.length === 0) {
+        resultsMessage.textContent =
+            "No more recommendations are available. " +
+            "Try changing your preferences.";
+    }
 }
 
 // handle preference form submission
@@ -169,7 +226,9 @@ preferencesForm.addEventListener("submit", function(event) {
         setting: document.getElementById("setting").value
     };
 
-    console.log("User preferences:", currentPreferences);
+    // start a new recommendation session
+    rejectedGameIds = new Set();
+    interestedGameIds = new Set();
 
     currentRecommendations = getRecommendations(currentPreferences);
 
