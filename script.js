@@ -48,6 +48,8 @@ preferencesForm.addEventListener("submit", function(event) {
 
     console.log("User preferences:", preferences);
 
+    const recommendations = getRecommendations(preferences);
+
     resultsSection.hidden = false;
     resultsMessage.textContent = "";
 
